@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LungScan - Lung Cancer Detection System</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), #2980b9);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo svg {
+            width: 40px;
+            height: 40px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: #7f8c8d;
+        }
+        
+        .upload-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+        
+        .upload-container {
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .upload-container:hover {
+            border-color: var(--primary);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-icon svg {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .upload-text h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .upload-text p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .blood-sample {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        
+        .features {
+            padding: 60px 0;
+            background-color: #f8fafc;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            background-color: rgba(52, 152, 219, 0.1);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon svg {
+            width: 35px;
+            height: 35px;
+            color: var(--primary);
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .feature-card p {
+            color: #7f8c8d;
+        }
+        
+        .how-it-works {
+            padding: 60px 0;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            position: relative;
+        }
+        
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            right: 60px;
+            height: 3px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            max-width: 200px;
+        }
+        
+        .step-number {
+            background-color: var(--primary);
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        .step h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .step p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-logo {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-logo h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-logo svg {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .footer-links {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-links h4 {
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+            color: #bdc3c7;
+        }
+        
+        /* Result Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 700px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--dark);
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .result-status.negative {
+            color: var(--secondary);
+        }
+        
+        .result-status.positive {
+            color: var(--danger);
+        }
+        
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .detail-item h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .detail-item p {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .result-image {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .result-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-height: 300px;
+        }
+        
+        .result-description {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .recommendations {
+            margin-top: 30px;
+        }
+        
+        .recommendations h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .recommendations ul {
+            padding-left: 20px;
+        }
+        
+        .recommendations li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .steps {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .steps::before {
+                display: none;
+            }
+            
+            .step {
+                max-width: 100%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6.38 6.38a10.5 10.5 0 0 0-.38 8.62L3 18l3 3 3-3-3-3 7.5-7.5L16 10l3-3-3-3-2.62 2.62a10.5 10.5 0 0 0-7 0z"></path>
+                    <path d="m16 16-3.37-3.37"></path>
+                    <path d="m6 14 3.37-3.37"></path>
+                    <path d="M8 22h8"></path>
+                    <path d="M12 17v5"></path>
+                </svg>
+                LungScan
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Lung Cancer Detection System</h1>
+            <p>Early detection saves lives. Upload your CT scan images and blood sample data for immediate analysis using our advanced image processing and machine learning algorithms.</p>
+        </div>
+    </section>
+    
+    <section class="upload-section container">
+        <label for="file-input" class="upload-container">
+            <div class="upload-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </div>
+            <div class="upload-text">
+                <h3>Upload CT Scan Images</h3>
+                <p>Drag and drop your CT scan images here or click to browse</p>
+                <p>Supported formats: JPEG, PNG, DICOM</p>
+            </div>
+        </label>
+        <input type="file" id="file-input" accept="image/jpeg,image/png,application/dicom" multiple>
+        
+        <div class="blood-sample">
+            <h3>Blood Sample Parameters (Optional)</h3>
+            <p>Adding blood sample data can improve the accuracy of our detection</p>
+            
+            <div class="form-group">
+                <label for="wbc">White Blood Cell Count (K/µL)</label>
+                <input type="number" id="wbc" placeholder="e.g., 7.5">
+            </div>
+            
+            <div class="form-group">
+                <label for="rbc">Red Blood Cell Count (M/µL)</label>
+                <input type="number" id="rbc" placeholder="e.g., 4.9">
+            </div>
+            
+            <div class="form-group">
+                <label for="platelets">Platelets (K/µL)</label>
+                <input type="number" id="platelets" placeholder="e.g., 250">
+            </div>
+        </div>
+        
+        <button class="btn" onclick="analyzeImages()">Analyze Images</button>
+    </section>
+    
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Advanced Features</h2>
+                <p>Our system utilizes cutting-edge image processing and machine learning algorithms to provide accurate detection and staging of lung cancer.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 8v4l3 3"></path>
+                        </svg>
+                    </div>
+                    <h3>Fast Results</h3>
+                    <p>Get accurate results in seconds using our optimized image processing algorithms and Support Vector Machine (SVM) classifier.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                            <circle cx="12" cy="13" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3>Image Processing</h3>
+                    <p>Advanced techniques including grayscale conversion, noise reduction, and binarization to improve image quality for analysis.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3>High Accuracy</h3>
+                    <p>Our SVM classifier provides higher accuracy compared to other algorithms, with detailed analysis of nodule characteristics.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                    </div>
+                    <h3>Feature Extraction</h3>
+                    <p>Extract key features like Area, Perimeter, and Eccentricity to accurately identify cancerous regions in CT scans.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h3>Cloud Storage</h3>
+                    <p>Secure cloud storage for CT scan images and analysis results, accessible 24/7 from anywhere.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Stage Detection</h3>
+                    <p>Determine the cancer stage based on comprehensive analysis of nodule characteristics and blood sample data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Our system uses a step-by-step approach to analyze CT scan images and detect lung cancer with high accuracy.</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Upload Images</h3>
+                    <p>Upload your CT scan images and optional blood sample data to our secure platform.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Image Processing</h3>
+                    <p>Our system processes images using grayscale conversion, noise reduction and binarization.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Feature Extraction</h3>
+                    <p>Key features like Area, Perimeter, and Eccentricity are extracted for analysis.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Classification</h3>
+                    <p>SVM classifier analyzes the features to determine if cancer is present and its stage.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h3>Results</h3>
+                    <p>Receive detailed results including cancer detection, stage, and recommendations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6.38 6.38a10.5 10.5 0 0 0-.38 8.62L3 18l3 3 3-3-3-3 7.5-7.5L16 10l3-3-3-3-2.62 2.62a10.5 10.5 0 0 0-7 0z"></path>
+                            <path d="m16 16-3.37-3.37"></path>
+                            <path d="m6 14 3.37-3.37"></path>
+                            <path d="M8 22h8"></path>
+                            <path d="M12 17v5"></path>
+                        </svg>
+                        LungScan
+                    </h3>
+                    <p>Early detection saves lives. Our advanced system helps detect lung cancer at early stages using state-of-the-art image processing and machine learning algorithms.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 LungScan - Lung Cancer Detection System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            
+            <div class="result-header">
+                <h2>Analysis Results</h2>
+            </div>
+            
+            <div class="result-status negative">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>No Cancer Detected</span>
+            </div>
+            
+            <div class="result-image">
+                <img src="/api/placeholder/400/300" alt="Processed CT Scan">
+            </div>
+            
+            <div class="result-details">
+                <div class="detail-item">
+                    <h4>Area</h4>
+                    <p id="negativeArea">245.67 px²</p>
+                </div>
+                
+                <div class="detail-item">
+                    <h4>Perimeter</h4>
+                    <p id="negativePerimeter">78.32 px</p>
+                </div>
+                
+                <div class="detail-item">
+                    <h4>Eccentricity</h4>
+                    <p id="negativeEccentricity">0.87</p>
+                </div>
+                
+                <div class="detail-item">
+                    <h4>Confidence</h4>
+                    <p id="negativeConfidence">98.5%</p>
+                </div>
+            </div>
+            
+            <div class="result-description">
+                <p id="negativeDescription">Based on our analysis of your CT scan images and provided blood sample data, we have found no indicators of lung cancer. The nodule features are within normal parameters.</p>
+            </div>
+            
+            <div class="recommendations">
+                <h3>Recommendations</h3>
+                <ul>
+                    <li>Continue regular health check-ups and maintain a healthy lifestyle.</li>
+                    <li>Avoid smoking and exposure to second-hand smoke.</li>
+                    <li>Maintain a routine of getting CT scans every 12-24 months if you're in a high-risk group.</li>
+                    <li>Consult with your healthcare provider for personalized medical advice.</li>
+                </ul>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn" onclick="downloadReport('negative')">Download Report</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="positiveResultModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePositiveModal()">&times;</span>
+            
+            <div class="result-header">
+                <h2>Analysis Results</h2>
+            </div>
+            
+            <div class="result-status positive">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="30" height="30">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span id="positiveStatusText">Cancer Detected - Stage II</span>
+            </div>
+            
+            <div class="result-image">
+                <img src="/api/placeholder/400/300" alt="Processed CT Scan with Cancer">
+            </div>
+            
+            <div class="result-details">
+                <div class="detail-item">
+                    <h4>Area</h4>
+                    <p id="positiveArea">456.82 px²</p>
+                </div>
+                
+                <div class="detail-item">
+                    <h4>Perimeter</h4>
+                    <p id="positivePerimeter">124.57 px</p>
+                </div>
+                
+                <div class="detail-item">
+                    <h4>Eccentricity</h4>
+                    <p id="positiveEccentricity">0.65</p>
+                </div>
+                
+                <div class="detail-item">
+                    <h4>Confidence</h4>
+                    <p id="positiveConfidence">92.7%</p>
+                </div>
+            </div>
+            
+            <div class="result-description">
+                <p id="positiveDescription">Based on our analysis of your CT scan images and blood sample data, we have detected indicators consistent with Stage II lung cancer. The nodule features show abnormal characteristics that require immediate medical attention.</p>
+            </div>
+            
+            <div class="recommendations">
+                <h3>Recommendations</h3>
+                <ul>
+                    <li><strong>Consult a specialist immediately</strong> - Share these results with an oncologist or pulmonologist.</li>
+                    <li>Additional diagnostic tests may be required for confirmation.</li>
+                    <li>Stage II lung cancer is treatable with proper medical intervention.</li>
+                    <li>Consider treatment options including surgery, radiation therapy, or chemotherapy.</li>
+                </ul>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn" onclick="downloadReport('positive')">Download Report</button>
+                <button class="btn btn-secondary" onclick="closePositiveModal()">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Variables to track uploaded files
+        let uploadedFiles = [];
+        let processingComplete = false;
+        
+        // Sample data for demonstration purposes
+        const sampleNegativeResult = {
+            status: "No Cancer Detected",
+            area: "245.67 px²",
+            perimeter: "78.32 px",
+            eccentricity: "0.87",
+            confidence: "98.5%",
+            description: "Based on our analysis of your CT scan images and provided blood sample data, we have found no indicators of lung cancer. The nodule features are within normal parameters."
+        };
+
+        const samplePositiveResult = {
+            status: "Cancer Detected - Stage II",
+            area: "456.82 px²",
+            perimeter: "124.57 px",
+            eccentricity: "0.65",
+            confidence: "92.7%",
+            description: "Based on our analysis of your CT scan images and blood sample data, we have detected indicators consistent with Stage II lung cancer. The nodule features show abnormal characteristics that require immediate medical attention."
+        };
+
+        // Function to handle file selection
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            uploadedFiles = Array.from(event.target.files);
+            
+            // Show file names in the upload container
+            const uploadText = document.querySelector('.upload-text');
+            if (uploadedFiles.length > 0) {
+                let fileNames = '<h3>Selected Files:</h3><ul style="list-style:none; padding:0;">';
+                uploadedFiles.forEach(file => {
+                    fileNames += `<li style="margin-bottom:5px;">✓ ${file.name}</li>`;
+                });
+                fileNames += '</ul>';
+                uploadText.innerHTML = fileNames;
+            }
+        });
+        
+        // Make the upload container clickable
+        document.querySelector('.upload-container').addEventListener('click', function() {
+            document.getElementById('file-input').click();
+        });
+        
+        // Make the upload container support drag and drop
+        const uploadContainer = document.querySelector('.upload-container');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadContainer.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadContainer.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadContainer.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            uploadContainer.style.borderColor = '#3498db';
+            uploadContainer.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
+        }
+        
+        function unhighlight() {
+            uploadContainer.style.borderColor = '#bdc3c7';
+            uploadContainer.style.backgroundColor = 'transparent';
+        }
+        
+        uploadContainer.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            document.getElementById('file-input').files = files;
+            
+            // Trigger the change event manually
+            const event = new Event('change');
+            document.getElementById('file-input').dispatchEvent(event);
+        }
+        
+        // Function to analyze the uploaded images
+        function analyzeImages() {
+            if (uploadedFiles.length === 0) {
+                alert('Please upload at least one CT scan image to analyze.');
+                return;
+            }
+            
+            // Show a loading state
+            const analyzeBtn = document.querySelector('.upload-section .btn');
+            const originalBtnText = analyzeBtn.textContent;
+            analyzeBtn.innerHTML = '<span style="display:inline-block;animation:spin 1s linear infinite;">↻</span> Analyzing...';
+            analyzeBtn.disabled = true;
+            
+            // Simulate processing time (in a real app, this would be an API call)
+            setTimeout(() => {
+                // Reset button
+                analyzeBtn.innerHTML = originalBtnText;
+                analyzeBtn.disabled = false;
+                
+                // Determine which result to show (randomly for demo)
+                const randomValue = Math.random();
+                if (randomValue > 0.5) {
+                    // Show positive result
+                    populatePositiveModal(samplePositiveResult);
+                    document.getElementById('positiveResultModal').style.display = 'flex';
+                } else {
+                    // Show negative result
+                    populateNegativeModal(sampleNegativeResult);
+                    document.getElementById('resultModal').style.display = 'flex';
+                }
+                
+                processingComplete = true;
+            }, 2500);
+        }
+        
+        // Function to populate negative result modal
+        function populateNegativeModal(data) {
+            document.getElementById('negativeArea').textContent = data.area;
+            document.getElementById('negativePerimeter').textContent = data.perimeter;
+            document.getElementById('negativeEccentricity').textContent = data.eccentricity;
+            document.getElementById('negativeConfidence').textContent = data.confidence;
+            document.getElementById('negativeDescription').textContent = data.description;
+        }
+
+        // Function to populate positive result modal
+        function populatePositiveModal(data) {
+            document.getElementById('positiveStatusText').textContent = data.status;
+            document.getElementById('positiveArea').textContent = data.area;
+            document.getElementById('positivePerimeter').textContent = data.perimeter;
+            document.getElementById('positiveEccentricity').textContent = data.eccentricity;
+            document.getElementById('positiveConfidence').textContent = data.confidence;
+            document.getElementById('positiveDescription').textContent = data.description;
+        }
+
+
+        // Function to close the result modal
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+        
+        // Function to close the positive result modal
+        function closePositiveModal() {
+            document.getElementById('positiveResultModal').style.display = 'none';
+        }
+        
+        // Modified function to download the report (simulated PDF)
+        function downloadReport(type) {
+            let reportContent = '';
+            let filename = 'LungScan_Report.txt'; // Using .txt for simplicity in client-side generation
+
+            let wbc = document.getElementById('wbc').value;
+            let rbc = document.getElementById('rbc').value;
+            let platelets = document.getElementById('platelets').value;
+
+            reportContent += "--- LungScan Analysis Report ---\n\n";
+            reportContent += "Date of Analysis: " + new Date().toLocaleString() + "\n\n";
+            reportContent += "--- Input Data ---\n";
+            reportContent += "Uploaded CT Scan Images: " + (uploadedFiles.length > 0 ? uploadedFiles.map(f => f.name).join(', ') : 'None') + "\n";
+            reportContent += "White Blood Cell Count: " + (wbc || 'Not provided') + " K/µL\n";
+            reportContent += "Red Blood Cell Count: " + (rbc || 'Not provided') + " M/µL\n";
+            reportContent += "Platelets: " + (platelets || 'Not provided') + " K/µL\n\n";
+
+            if (type === 'negative') {
+                reportContent += "--- Analysis Result ---\n";
+                reportContent += "Status: " + sampleNegativeResult.status + "\n";
+                reportContent += "Area: " + sampleNegativeResult.area + "\n";
+                reportContent += "Perimeter: " + sampleNegativeResult.perimeter + "\n";
+                reportContent += "Eccentricity: " + sampleNegativeResult.eccentricity + "\n";
+                reportContent += "Confidence: " + sampleNegativeResult.confidence + "\n";
+                reportContent += "\nDescription: " + sampleNegativeResult.description + "\n\n";
+                reportContent += "--- Recommendations ---\n";
+                reportContent += "- Continue regular health check-ups and maintain a healthy lifestyle.\n";
+                reportContent += "- Avoid smoking and exposure to second-hand smoke.\n";
+                reportContent += "- Maintain a routine of getting CT scans every 12-24 months if you're in a high-risk group.\n";
+                reportContent += "- Consult with your healthcare provider for personalized medical advice.\n";
+                filename = 'LungScan_Negative_Report.txt';
+            } else if (type === 'positive') {
+                reportContent += "--- Analysis Result ---\n";
+                reportContent += "Status: " + samplePositiveResult.status + "\n";
+                reportContent += "Nodule Area: " + samplePositiveResult.area + "\n";
+                reportContent += "Nodule Perimeter: " + samplePositiveResult.perimeter + "\n";
+                reportContent += "Nodule Eccentricity: " + samplePositiveResult.eccentricity + "\n";
+                reportContent += "Confidence: " + samplePositiveResult.confidence + "\n";
+                reportContent += "\nDescription: " + samplePositiveResult.description + "\n\n";
+                reportContent += "--- Recommendations ---\n";
+                reportContent += "- Consult a specialist immediately - Share these results with an oncologist or pulmonologist.\n";
+                reportContent += "- Additional diagnostic tests may be required for confirmation.\n";
+                reportContent += "- Stage II lung cancer is treatable with proper medical intervention.\n";
+                reportContent += "- Consider treatment options including surgery, radiation therapy, or chemotherapy.\n";
+                filename = 'LungScan_Positive_Report.txt';
+            }
+
+            // Create a Blob from the report content
+            const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+            
+            // Create a link element
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename; // Set the filename for download
+            
+            // Append the link to the body (hidden) and trigger click
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up: remove the link and revoke the object URL
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+
+            alert('Report download started. Check your downloads folder for "' + filename + '".');
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const resultModal = document.getElementById('resultModal');
+            const positiveResultModal = document.getElementById('positiveResultModal');
+            
+            if (event.target == resultModal) {
+                resultModal.style.display = 'none';
+            }
+            
+            if (event.target == positiveResultModal) {
+                positiveResultModal.style.display = 'none';
+            }
+        }
+        
+        // Add keyframe animation for loading spinner
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
